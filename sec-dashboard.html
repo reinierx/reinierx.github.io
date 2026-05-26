@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial SEC Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #fff;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid #e1e1e1;
+            z-index: 1000;
+            padding: 0 20px;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a1a;
+            border: 2px solid #333;
+            padding: 8px 20px;
+            border-radius: 8px;
+            background: #fff;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            font-size: 16px;
+            padding: 8px 16px;
+            border: 2px solid #333;
+            border-radius: 6px;
+            background: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: #333;
+            color: #fff;
+        }
+
+        /* Hero */
+        .hero {
+            margin-top: 80px;
+            min-height: 50vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #0c1445 0%, #1a1a2e 50%, #16213e 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(33, 150, 243, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(33, 150, 243, 0.2);
+            color: #64b5f6;
+            border: 1px solid rgba(100, 181, 246, 0.3);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .hero-content h2 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #64b5f6, #42a5f5, #2196f3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: #b0bec5;
+            max-width: 600px;
+            line-height: 1.7;
+        }
+
+        /* Search Section */
+        .search-section {
+            padding: 60px 0 40px;
+            background: #fff;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            color: #1a1a1a;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: #2196f3;
+            border-radius: 2px;
+        }
+
+        .search-card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e1e1e1;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .search-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 140px auto;
+            gap: 20px;
+            align-items: end;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-group label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-group input,
+        .input-group select {
+            padding: 12px 16px;
+            border: 2px solid #e1e1e1;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #1a1a1a;
+            background: #fff;
+            transition: border-color 0.3s ease;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: #2196f3;
+        }
+
+        .input-group input::placeholder {
+            color: #aaa;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .btn-primary {
+            background: #2196f3;
+            color: white;
+            border-color: #2196f3;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: #2196f3;
+            border-color: #2196f3;
+        }
+
+        .btn-primary:disabled {
+            background: #90caf9;
+            border-color: #90caf9;
+            cursor: not-allowed;
+        }
+
+        /* Results Section */
+        .results-section {
+            padding: 60px 0 100px;
+            background: #f8f9fa;
+            min-height: 300px;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .results-count {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .results-count span {
+            color: #2196f3;
+            font-weight: 700;
+        }
+
+        .filings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 30px;
+        }
+
+        .filing-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e8e8e8;
+        }
+
+        .filing-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.13);
+        }
+
+        .filing-card-header {
+            background: linear-gradient(135deg, #0c1445 0%, #1a1a2e 100%);
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .form-type-badge {
+            background: rgba(33, 150, 243, 0.25);
+            color: #64b5f6;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            border: 1px solid rgba(100, 181, 246, 0.3);
+            white-space: nowrap;
+        }
+
+        .ticker-badge {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e0e0e0;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .filing-card-body {
+            padding: 24px;
+        }
+
+        .filing-company {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .filing-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .filing-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .meta-icon {
+            color: #2196f3;
+            flex-shrink: 0;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tech-tag {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 500;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 12px;
+        }
+
+        .project-link {
+            color: #2196f3;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 8px 16px;
+            border: 2px solid #2196f3;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .project-link:hover {
+            background: #2196f3;
+            color: white;
+        }
+
+        /* Loading */
+        .loading-state {
+            display: none;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid #e3f2fd;
+            border-top-color: #2196f3;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-state p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Empty / Error state */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #999;
+        }
+
+        .empty-state svg {
+            margin-bottom: 20px;
+            opacity: 0.4;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            font-size: 1rem;
+        }
+
+        .error-card {
+            background: #fff3f3;
+            border: 1px solid #ffcdd2;
+            border-radius: 12px;
+            padding: 24px;
+            color: #c62828;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .error-card strong {
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1a1a1a;
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .footer p {
+            color: #b0bec5;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #2196f3; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #1976d2; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu { display: none; }
+
+            .hero-content h2 { font-size: 2.4rem; }
+
+            .search-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-card { padding: 24px; }
+
+            .section-title { font-size: 2rem; }
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 0 15px; }
+            .hero-content h2 { font-size: 1.9rem; }
+            .filings-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <h1>Reinier</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">← Portfolio</a></li>
+                <li><a href="#search" class="nav-link">Search</a></li>
+                <li><a href="#results" class="nav-link">Results</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">SEC EDGAR API</div>
+            <h2>Financial SEC Dashboard</h2>
+            <p>Search real-time SEC filings from the EDGAR database. Query by ticker and form type to retrieve company disclosures, earnings reports, and regulatory filings.</p>
+        </div>
+    </section>
+
+    <!-- Search -->
+    <section class="search-section" id="search">
+        <div class="container">
+            <div class="search-card">
+                <div class="search-grid">
+                    <div class="input-group">
+                        <label for="ticker">Ticker Symbol</label>
+                        <input type="text" id="ticker" placeholder="e.g. AAPL, MSFT, TSLA" value="AAPL" />
+                    </div>
+                    <div class="input-group">
+                        <label for="formType">Form Type</label>
+                        <select id="formType">
+                            <option value="10-K">10-K — Annual Report</option>
+                            <option value="10-Q">10-Q — Quarterly Report</option>
+                            <option value="8-K">8-K — Current Report</option>
+                            <option value="S-1">S-1 — IPO Registration</option>
+                            <option value="DEF 14A">DEF 14A — Proxy Statement</option>
+                            <option value="4">Form 4 — Insider Trades</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="resultSize">Results</label>
+                        <select id="resultSize">
+                            <option value="5">5 results</option>
+                            <option value="10">10 results</option>
+                            <option value="20">20 results</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>&nbsp;</label>
+                        <button class="btn btn-primary" id="searchBtn" onclick="fetchFilings()">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results -->
+    <section class="results-section" id="results">
+        <div class="container">
+
+            <div class="loading-state" id="loadingState">
+                <div class="spinner"></div>
+                <p>Fetching filings from SEC EDGAR…</p>
+            </div>
+
+            <div id="resultsContent">
+                <div class="empty-state">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#2196f3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                    <h3>Enter a ticker to get started</h3>
+                    <p>Type a stock ticker and select a form type, then click Search.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Reinier. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const API_KEY = 'b910844165736906eed4834d6a9e059406dffed5ee99e87b827c73f8787247ba';
+        const API_URL = 'https://api.sec-api.io';
+
+        function formatDate(dateStr) {
+            if (!dateStr) return 'N/A';
+            const d = new Date(dateStr);
+            return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        }
+
+        function buildFilingUrl(filing) {
+            if (filing.linkToFilingDetails) return filing.linkToFilingDetails;
+            if (filing.linkToHtmlAnnualReport) return filing.linkToHtmlAnnualReport;
+            if (filing.id) return `https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=${filing.entityId}&type=${encodeURIComponent(filing.formType)}&dateb=&owner=include&count=40`;
+            return '#';
+        }
+
+        function renderFilings(filings, query) {
+            const container = document.getElementById('resultsContent');
+
+            if (!filings || filings.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#2196f3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <h3>No filings found</h3>
+                        <p>No results for <strong>${query}</strong>. Try a different ticker or form type.</p>
+                    </div>`;
+                return;
+            }
+
+            const cards = filings.map(f => {
+                const filingUrl = buildFilingUrl(f);
+                const cik = f.entityId || f.cik || '';
+                const edgarUrl = cik
+                    ? `https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=${cik}&type=${encodeURIComponent(f.formType)}&dateb=&owner=include&count=40`
+                    : '#';
+
+                return `
+                <div class="filing-card">
+                    <div class="filing-card-header">
+                        <span class="ticker-badge">${f.ticker || '—'}</span>
+                        <span class="form-type-badge">${f.formType}</span>
+                    </div>
+                    <div class="filing-card-body">
+                        <div class="filing-company">${f.companyName || 'N/A'}</div>
+                        <div class="filing-meta">
+                            <div class="filing-meta-item">
+                                <svg class="meta-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                Filed: ${formatDate(f.filedAt)}
+                            </div>
+                            ${f.periodOfReport ? `
+                            <div class="filing-meta-item">
+                                <svg class="meta-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                Period: ${formatDate(f.periodOfReport)}
+                            </div>` : ''}
+                        </div>
+                        <div class="tech-stack">
+                            <span class="tech-tag">${f.formType}</span>
+                            ${f.exchanges && f.exchanges.length ? `<span class="tech-tag">${f.exchanges[0]}</span>` : ''}
+                            ${f.sic ? `<span class="tech-tag">SIC ${f.sic}</span>` : ''}
+                        </div>
+                        <div class="project-links">
+                            ${filingUrl && filingUrl !== '#' ? `<a href="${filingUrl}" target="_blank" rel="noopener" class="project-link">View Filing</a>` : ''}
+                            <a href="${edgarUrl}" target="_blank" rel="noopener" class="project-link">EDGAR</a>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+
+            container.innerHTML = `
+                <div class="results-header">
+                    <div class="results-count">Showing <span>${filings.length}</span> filing${filings.length !== 1 ? 's' : ''} for <span>${query}</span></div>
+                </div>
+                <div class="filings-grid">${cards}</div>`;
+        }
+
+        async function fetchFilings() {
+            const ticker = document.getElementById('ticker').value.trim().toUpperCase();
+            const formType = document.getElementById('formType').value;
+            const size = document.getElementById('resultSize').value;
+            const btn = document.getElementById('searchBtn');
+            const loading = document.getElementById('loadingState');
+            const content = document.getElementById('resultsContent');
+
+            if (!ticker) {
+                document.getElementById('ticker').focus();
+                return;
+            }
+
+            btn.disabled = true;
+            loading.style.display = 'block';
+            content.style.display = 'none';
+
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            try {
+                const response = await fetch(`${API_URL}?token=${API_KEY}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        query: `ticker:${ticker} AND formType:"${formType}"`,
+                        from: '0',
+                        size: String(size),
+                        sort: [{ filedAt: { order: 'desc' } }]
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API error ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                const filings = data.filings || [];
+                renderFilings(filings, `${ticker} ${formType}`);
+
+            } catch (err) {
+                content.innerHTML = `
+                    <div class="error-card">
+                        <strong>Could not fetch filings</strong>
+                        ${err.message}
+                    </div>`;
+            } finally {
+                btn.disabled = false;
+                loading.style.display = 'none';
+                content.style.display = 'block';
+            }
+        }
+
+        document.getElementById('ticker').addEventListener('keydown', e => {
+            if (e.key === 'Enter') fetchFilings();
+        });
+    </script>
+</body>
+</html>
