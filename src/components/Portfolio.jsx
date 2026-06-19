@@ -71,6 +71,28 @@ export default function Portfolio() {
             </div>
           </div>
 
+          <div className="project-card">
+            <div className="project-image">
+              <img
+                src="https://images.unsplash.com/photo-1574267432553-4b4628081c31?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+                alt="Movie Database"
+              />
+            </div>
+            <div className="project-info">
+              <h3>Movie Database</h3>
+              <p>Search the OMDb catalog for movies, view posters, plot summaries, cast, ratings, and save favorites.</p>
+              <div className="tech-stack">
+                <span className="tech-tag">React</span>
+                <span className="tech-tag">OMDb API</span>
+                <span className="tech-tag">Vite</span>
+              </div>
+              <div className="project-links">
+                <a href="/#/movieDB" className="project-link">Live Demo</a>
+                <a href="https://github.com/reinierx/reactjs-movieDB" className="project-link">GitHub</a>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
