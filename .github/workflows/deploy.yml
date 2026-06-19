@@ -22,14 +22,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Inject API key into config.js
-        run: echo "window.SEC_API_KEY = '${{ secrets.SEC_API_KEY }}';" > config.js
+      - name: Inject API key into public/config.js
+        run: echo "window.SEC_API_KEY = '${{ secrets.SEC_API_KEY }}';" > public/config.js
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
 
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: './dist'
 
       - name: Deploy to GitHub Pages
         id: deployment
